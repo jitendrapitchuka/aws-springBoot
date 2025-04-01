@@ -1,8 +1,10 @@
 package com.jitendra.aws.services;
 
+import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 
 import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.jitendra.aws.Controllers.AmazonS3Controller;
 import com.jitendra.aws.utils.AmazonS3Config;
 import org.slf4j.Logger;
@@ -10,7 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 
-import java.io.InputStream;
+import java.io.*;
+import java.util.List;
 
 @Service
 public class AmazonS3Service {
@@ -40,7 +43,27 @@ public class AmazonS3Service {
     }
 
     // get object from s3 Bucket
-    public S3Object downloadFile(String fileName,String bucketName){
-        return amazonS3Config.amazonS3().getObject(bucketName,fileName);
+    public String downloadFile(String fileName,String bucketName) throws IOException {
+        try {
+            S3Object s3Object = amazonS3Config.amazonS3().getObject(bucketName, fileName);
+            S3ObjectInputStream s3ObjectInputStream = s3Object.getObjectContent();
+            FileOutputStream fileOutputStream = new FileOutputStream(new File(fileName));
+            byte[] buffer = new byte[1024];
+            int read_len = 0;
+            while ((read_len = s3ObjectInputStream.read(buffer)) > 0) {
+                fileOutputStream.write(buffer, 0, read_len);
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        return "got the s3 object";
     }
+
+    public List<Bucket> getAllBuckets(){
+        return amazonS3Config.amazonS3().listBuckets();
+    }
+
+
 }

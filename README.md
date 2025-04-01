@@ -19,3 +19,13 @@ After creating the IAM user, store the access credentials in the `application.pr
    aws.secretAccessKey=YOUR_SECRET_ACCESS_KEY
 aws.region=ap-south-1
 ```
+### 3. **S3 Operations Implemented**
+The following operations are implemented by taking examples from the AWS SDK documentation:
+
+1. **Put object into AWS S3**
+2. **Get object from AWS S3 bucket**
+3. **List all buckets** available in your AWS account
+
+For more details, check out the [AWS SDK for Java Documentation](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/examples-s3-buckets.html).
+
+**Note:** The URL might change later.
